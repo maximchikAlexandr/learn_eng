@@ -5,6 +5,6 @@ user_bp = Blueprint('user', __name__, template_folder='templates', static_folder
 @user_bp.route('/login')
 def login():
     try:
-        return render_template('login/html')
+        return render_template('login.html')
     except:
         abort(404)
