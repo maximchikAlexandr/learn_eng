@@ -1,14 +1,5 @@
-from flask_login import UserMixin
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
-
-class User(db.Model, UserMixin):
-    __bind_key__ = 'user_bp'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(128), nullable=False, unique=True)
-    email = db.Column(db.String(255), nullable=False)
-    hash_psw = db.Column(db.String(255), nullable=False)
+from extensions import db
+from user.models import User
 
 class UserDB:
 
@@ -22,3 +13,6 @@ class UserDB:
 
         self.__db.session.add(user)
         self.__db.session.commit()
+
+
+userDB = UserDB(db)
