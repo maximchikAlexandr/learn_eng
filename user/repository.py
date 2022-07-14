@@ -18,7 +18,7 @@ class UserDB:
     def add_new_user(self, username, email, hashpsw):
         user = User(username=username,
                     email=email,
-                    hashpsw=hashpsw)
+                    hash_psw=hashpsw)
 
         self.__db.session.add(user)
         self.__db.session.commit()
