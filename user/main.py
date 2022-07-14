@@ -2,11 +2,13 @@ from flask import render_template,Blueprint, abort, request, flash, current_app
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from extensions import db
 from user.service import is_valid_data_user
-# from user.repository import UserDB
+from user.repository import UserDB
+
 
 user_bp = Blueprint('user', __name__, template_folder='templates', static_folder='static')
-# userDB = UserDB(db)
+userDB = UserDB(db)
 
 
 
@@ -24,9 +26,9 @@ def register():
                            request.form['psw2']):
             flash('Good job', category='success')
             hash_psw = generate_password_hash(request.form['psw'])
-            # # userDB.add_new_user(request.form['name'],
-            #                request.requestform['email'],
-            #                     hash_psw)
+            userDB.add_new_user(username=request.form['name'],
+                         email=request.form['email'],
+                         hashpsw=hash_psw)
 
             return render_template('login.html')
         flash('Bad job', category='danger')
