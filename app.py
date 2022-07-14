@@ -1,14 +1,14 @@
 from flask import Flask, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
 
 from config import ConfigurationTest
+from extensions import db
 from user.main import user_bp
 
 app = Flask(__name__)
 app.config.from_object(ConfigurationTest)
+db.init_app(app) # allow to use flask_sqlalchemy with Blueptint
 app.register_blueprint(user_bp, url_prefix='/user')
 
-db = SQLAlchemy(app)
 
 @app.route('/')
 def index():

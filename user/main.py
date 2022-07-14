@@ -1,16 +1,11 @@
-from flask import render_template,Blueprint, abort, request, flash, current_app
-from flask_sqlalchemy import SQLAlchemy
+from flask import render_template,Blueprint, abort, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from extensions import db
 from user.service import is_valid_data_user
-from user.repository import UserDB
+from user.repository import userDB
 
 
 user_bp = Blueprint('user', __name__, template_folder='templates', static_folder='static')
-userDB = UserDB(db)
-
-
 
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -20,6 +15,7 @@ def login():
 @user_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        # later create func "register_new_user" in service.py
         if is_valid_data_user(request.form['name'],
                            request.form['email'],
                            request.form['psw'],
@@ -34,4 +30,3 @@ def register():
         flash('Bad job', category='danger')
 
     return render_template('register.html')
-
