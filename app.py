@@ -12,8 +12,10 @@ app.register_blueprint(user_bp, url_prefix='/user')
 
 @app.route('/')
 def index():
-    return redirect(url_for('user.login'))
-
+    return '''
+    <p><a href="/user/register"> Registration </a>
+    <p><a href="/user/login"> Login </a>
+    '''
 
 if __name__ == '__main__':
     app.run()
