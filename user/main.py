@@ -1,7 +1,7 @@
 from flask import render_template,Blueprint, abort, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from user.service import is_valid_data_user
+from user.service import check_data_user
 from user.repository import userDB
 
 
