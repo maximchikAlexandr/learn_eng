@@ -15,18 +15,20 @@ def login():
 @user_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        # later create func "register_new_user" in service.py
-        if is_valid_data_user(request.form['name'],
-                           request.form['email'],
-                           request.form['psw'],
-                           request.form['psw2']):
-            flash('Good job', category='success')
+        check_dct = check_data_user(request)
+        # if data in form is correct
+        if check_dct['password_ok']:
             hash_psw = generate_password_hash(request.form['psw'])
-            userDB.add_new_user(username=request.form['name'],
-                         email=request.form['email'],
-                         hashpsw=hash_psw)
 
-            return render_template('login.html')
-        flash('Bad job', category='danger')
+            if userDB.add_new_user(username=request.form['name'],
+                         email=request.form['email'],
+                         hashpsw=hash_psw):
+                flash(f'User «{request.form["name"]}» is registred in the site',
+                      category='success')
+                return render_template('login.html')
+        # if data in form is not correct
+        if len(check_dct['flashed_messages']) > 0:
+            for msg in check_dct['flashed_messages']:
+                flash(msg, category='danger')
 
     return render_template('register.html')

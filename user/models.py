@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 
-
 from extensions import db
+
 
 class User(db.Model, UserMixin):
     __bind_key__ = 'user_bp'
