@@ -1,6 +1,6 @@
 from flask import flash
 
-from extensions import db
+from user import db
 from user.models import User
 
 
