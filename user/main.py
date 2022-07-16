@@ -9,6 +9,8 @@ user_bp = Blueprint('user', __name__, template_folder='templates', static_folder
 
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        pass
     return render_template('login.html')
 
 
