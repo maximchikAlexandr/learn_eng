@@ -1,3 +1,6 @@
+import math
+import time
+
 from flask import flash
 
 from user import db
@@ -24,9 +27,11 @@ class UserDB:
 
     @_wapper_error('Error of DB: username is not unique')
     def add_new_user(self, username, email, hashpsw):
+        tm = math.floor(time.time())  # Save time
         user = User(username=username,
                     email=email,
-                    hash_psw=hashpsw)
+                    hash_psw=hashpsw,
+                    time=tm)
 
         self.__db.session.add(user)
         self.__db.session.commit()
