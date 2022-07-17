@@ -25,7 +25,7 @@ class UserDB:
     def __init__(self, db):
         self.__db = db
 
-    @_wapper_error('Error of DB: username is not unique')
+    @_wapper_error('Error of DB: username or email are not unique')
     def add_new_user(self, username, email, hashpsw):
         tm = math.floor(time.time())  # Save time
         user = User(username=username,
@@ -37,6 +37,7 @@ class UserDB:
         self.__db.session.commit()
         return True
 
+    @_wapper_error('Error of DB: user is not exist')
     def get_user(self, email):
         return User.query.filter_by(email=email).first()
 
