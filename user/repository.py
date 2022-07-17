@@ -38,7 +38,11 @@ class UserDB:
         return True
 
     @_wapper_error('Error of DB: user is not exist')
-    def get_user(self, email):
+    def get_user_by_mail(self, email):
         return User.query.filter_by(email=email).first()
+
+    @_wapper_error('Error of DB: user is not exist')
+    def get_user_by_id(self, user_id):
+        return User.query.get(user_id)
 
 userDB = UserDB(db)

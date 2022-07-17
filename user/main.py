@@ -16,8 +16,7 @@ login_manager.login_message_category = 'success'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(user_id)
-
+    return userDB.get_user_by_id(user_id)
 
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -26,7 +25,7 @@ def login():
         password = request.form['psw']
 
         if email and password:
-            user = userDB.get_user(email=email)
+            user = userDB.get_user_by_mail(email=email)
             rm = True if request.form.get('remainme') else False
             if user and check_password_hash(user.hash_psw, password):
                 login_user(user, remember=rm)
