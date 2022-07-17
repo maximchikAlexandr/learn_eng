@@ -2,4 +2,6 @@
 \templates\test.html
 \.idea\
 \venv\
+\__pycache__\
 .gitignore
+test_login.txt
