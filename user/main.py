@@ -1,16 +1,38 @@
-from flask import render_template,Blueprint, abort, request, flash
+from flask import render_template,Blueprint, abort, request, flash, redirect, url_for
+from flask_login import LoginManager, login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from user.service import check_data_user
 from user.repository import userDB
+from user.models import User
 
 
 user_bp = Blueprint('user', __name__, template_folder='templates', static_folder='static')
+login_manager = LoginManager()
+login_manager.login_view = 'user.login'
+login_manager.login_message = 'Please login to access this page'
+login_manager.login_message_category = 'success'
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    print('load user')
+    return User.query.get(user_id)
+
 
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        pass
+        email = request.form['email']
+        password = request.form['psw']
+        print(email,password, sep='\n')
+        if email and password:
+            user = userDB.get_user(email=email)
+            rm = True if request.form.get('remainme') else False
+            if user and check_password_hash(user.hash_psw, password):
+                login_user(user, remember=rm)
+                return redirect(url_for('index'))
+
     return render_template('login.html')
 
 
@@ -35,3 +57,9 @@ def register():
                 flash(msg, category='danger')
 
     return render_template('register.html')
+
+@user_bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('user.login'))

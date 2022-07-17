@@ -37,4 +37,7 @@ class UserDB:
         self.__db.session.commit()
         return True
 
+    def get_user(self, email):
+        return User.query.filter_by(email=email).first()
+
 userDB = UserDB(db)
