@@ -47,6 +47,6 @@ def check_data_user(request)  -> dict:
     }
 
     return {
-        'password_ok' : not all(check_dct.values()),
+        'valid_data' : not any(check_dct.values()),
         'flashed_messages' : [flashed_messages[key] for key, value in check_dct.items() if value]
     }

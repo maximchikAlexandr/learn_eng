@@ -4,7 +4,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from user.service import check_data_user
 from user.repository import userDB
-from user.models import User
 
 
 user_bp = Blueprint('user', __name__, template_folder='templates', static_folder='static')
@@ -40,7 +39,7 @@ def register():
         check_dct = check_data_user(request)
 
         # if data in form is correct
-        if check_dct['password_ok']:
+        if check_dct['valid_data']:
             hash_psw = generate_password_hash(request.form['psw'])
             if userDB.add_new_user(username=request.form['name'],
                          email=request.form['email'],
