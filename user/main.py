@@ -16,7 +16,6 @@ login_manager.login_message_category = 'success'
 
 @login_manager.user_loader
 def load_user(user_id):
-    print('load user')
     return User.query.get(user_id)
 
 
@@ -25,7 +24,7 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['psw']
-        print(email,password, sep='\n')
+
         if email and password:
             user = userDB.get_user(email=email)
             rm = True if request.form.get('remainme') else False
@@ -33,7 +32,7 @@ def login():
                 login_user(user, remember=rm)
                 return redirect(url_for('index'))
 
-    return render_template('login.html')
+    return render_template('user/login.html')
 
 
 @user_bp.route('/register', methods=['GET', 'POST'])
@@ -49,14 +48,14 @@ def register():
                          hashpsw=hash_psw):
                 flash(f'User «{request.form["name"]}» is registred in the site',
                       category='success')
-                return render_template('login.html')
+                return render_template('user/login.html')
 
         # if data in form is not correct
         if check_dct['flashed_messages']:
             for msg in check_dct['flashed_messages']:
                 flash(msg, category='danger')
 
-    return render_template('register.html')
+    return render_template('user/register.html')
 
 @user_bp.route('/logout')
 @login_required
