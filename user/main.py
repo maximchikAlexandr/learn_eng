@@ -29,7 +29,7 @@ def login():
             if user and check_password_hash(user.hash_psw, password):
                 login_user(user, remember=rm)
                 return redirect(url_for('index'))
-
+            flash('Password or email are not corect', category='danger')
     return render_template('user/login.html', title='Please login')
 
 
