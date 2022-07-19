@@ -6,4 +6,4 @@
 .gitignore
 test_login.txt
 \dct\service\text.txt
-dct\service\config.py
+\dct\service\config.py
