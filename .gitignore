@@ -5,3 +5,5 @@
 \__pycache__\
 .gitignore
 test_login.txt
+\dct\service\text.txt
+dct/service/config.py
