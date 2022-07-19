@@ -1,3 +1,6 @@
-{% for word in words %}
+{% for word, items in words.items() %}
+     <br>
      <br> {{word}}
+     <br> {{items[0][ts]}}
+     <br> {{items[0][tr]}}
 {% endfor %}

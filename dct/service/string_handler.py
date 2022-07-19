@@ -1,5 +1,7 @@
 import re
 
+from dct.service.parser_yandex_api import getEngTranslate
+
 
 def get_unic_words(text: str) -> list:
     clean_text = re.sub('[^a-zA-Z]', ' ', text).lower()
@@ -13,6 +15,8 @@ def get_test_text() -> list:
     We provide dozens of variables for colors, font styles, and more at a :root level for use anywhere. 
     On components and utilities, CSS variables are scoped to the relevant class and can easily be modified.
     '''
-    return get_unic_words(text)
+    words = get_unic_words(text)
+
+    return {word : [getEngTranslate(word)] for word in words}
 
 
