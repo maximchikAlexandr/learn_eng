@@ -7,3 +7,5 @@
 test_login.txt
 \dct\service\text.txt
 \dct\service\config.py
+\dct\data\dct_eng.db
+\user\data\users.db
