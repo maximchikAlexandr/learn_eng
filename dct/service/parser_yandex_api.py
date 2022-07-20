@@ -26,6 +26,7 @@ def get_synonyms(response):
         if values: res_dct[key] = values
     return res_dct
 
+
 def get_transcriprion(response):
     return response['def'][0].get('ts', '') if response['def'] else ''
 
@@ -35,15 +36,6 @@ def getEngTranslate(findWord):
           "&lang=en-ru&text=" + findWord + "&ui=ru"
     res = requests.get(URL).json()
 
-    # examples
-    # pprint.pprint(get_examples(res))
-    # synonyms
-    # pprint.pprint(get_synonyms(res))
-    # transcription
-    # print(get_transcriprion(res))
-
     return {'ts' : get_transcriprion(res),
             'tr' : get_synonyms(res),
             'ex' : get_examples(res)}
-
-getEngTranslate('walk')

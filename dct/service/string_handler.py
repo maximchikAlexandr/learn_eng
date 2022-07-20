@@ -15,8 +15,7 @@ def get_test_text() -> list:
     We provide dozens of variables for colors, font styles, and more at a :root level for use anywhere. 
     On components and utilities, CSS variables are scoped to the relevant class and can easily be modified.
     '''
-    words = get_unic_words(text)
 
-    return {word : [getEngTranslate(word)] for word in words}
+    return {word : getEngTranslate(word) for word in get_unic_words(text)}
 
 

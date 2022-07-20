@@ -1,6 +1,10 @@
+<table>
 {% for word, items in words.items() %}
-     <br>
-     <br> {{word}}
-     <br> {{items[0][ts]}}
-     <br> {{items[0][tr]}}
+     <tr>
+          <td>{{word}}</td>
+          <td>{{items['ts']}}</td>
+          <td> {{items['tr']}}</td>
+          <td>{{items['ex']}}</td>
+     </tr>
 {% endfor %}
+</table>
