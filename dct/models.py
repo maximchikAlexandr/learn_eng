@@ -1,4 +1,4 @@
-from user import db
+from dct import db
 
 
 class Texts(db.Model):
