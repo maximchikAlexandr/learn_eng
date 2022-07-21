@@ -5,13 +5,13 @@ from flask import flash
 
 from dct import db
 from dct.models import (
-Texts,
-TextsEngWords,
-Examples,
-EngWords,
-TrRusWords,
-EngRusWords
-)
+    Texts,
+    TextsEngWords,
+    Examples,
+    EngWords,
+    TrRusWords,
+    EngRusWords
+    )
 
 def _wapper_error(flashed_message):
     def wapper_error(func):
@@ -31,7 +31,7 @@ class DictDB:
     def __init__(self, db):
         self.__db = db
 
-    # @_wapper_error('Error of DB: text is not unique')
+    @_wapper_error('Error of DB: text is not unique')
     def add_text(self, text):
         tm = math.floor(time.time())  # Save time
         text_model = Texts(text=text,
