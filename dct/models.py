@@ -7,15 +7,16 @@ class Texts(db.Model):
     time = db.Column(db.Integer(), nullable=False)
     id_user = db.Column(db.Integer(), nullable=False)
 
-class TextsEngWords(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    id_text = db.Column(db.Integer(), nullable=False)
-    id_eng_word = db.Column(db.Integer(), nullable=False)
+    def __repr__(self):
+        return f'<id {self.id}, text: {self.text[:10]} >'
 
 class EngWords(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     eng_word = db.Column(db.String(40), nullable=False, unique=True)
     ts = db.Column(db.String(40))
+
+    def __repr__(self):
+        return f'<id {self.id}, word: {self.eng_word} >'
 
 class Examples(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -23,12 +24,13 @@ class Examples(db.Model):
     pos = db.Column(db.String(20), nullable=False)
     id_eng_word = db.Column(db.Integer, nullable=False)
 
+    def __repr__(self):
+        return f'<id {self.id}, ex: {self.example} >'
+
 class TrRusWords(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     rus_word = db.Column(db.String(40), nullable=False, unique=True)
     pos = db.Column(db.String(20), nullable=False)
 
-class EngRusWords(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    id_eng_word = db.Column(db.Integer(), nullable=False)
-    id_rus_word = db.Column(db.Integer(), nullable=False)
+    def __repr__(self):
+        return f'<id {self.id}, rus word: {self.rus_word} >'
