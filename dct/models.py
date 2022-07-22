@@ -1,5 +1,16 @@
 from dct import db
 
+texts_eng_words = db.Table('texts_eng_words',
+                           db.Column('id', db.Integer(), primary_key=True),
+                           db.Column('id_text', db.Integer(), db.ForeignKey('texts.id')),
+                           db.Column('id_eng_word', db.Integer(), db.ForeignKey('eng_words.id'))
+                           )
+
+eng_rus_words = db.Table('eng_rus_words',
+                         db.Column('id', db.Integer(), primary_key=True),
+                         db.Column('id_rus_word', db.Integer(), db.ForeignKey('tr_rus_word.id')),
+                         db.Column('id_eng_word', db.Integer(), db.ForeignKey('eng_words.id'))
+                         )
 
 class Text(db.Model):
     __tablename__ = 'texts'
@@ -8,8 +19,12 @@ class Text(db.Model):
     time = db.Column(db.Integer(), nullable=False)
     id_user = db.Column(db.Integer(), nullable=False)
 
+    words = db.relationship('EngWord', secondary=texts_eng_words, backref=db.backref('texts', lazy='dynamic'))
+
     def __repr__(self):
         return f'<id {self.id}, text: {self.text} >'
+
+
 
 class EngWord(db.Model):
     __tablename__ = 'eng_words'
@@ -18,8 +33,10 @@ class EngWord(db.Model):
     ts = db.Column(db.String(40))
     examples = db.relationship('Example', backref='eng_word', lazy=True)
 
+    translated_words = db.relationship('TrRusWord', secondary=eng_rus_words, backref=db.backref('eng_words', lazy='dynamic'))
+
     def __repr__(self):
-        return f'<id {self.id}, word: {self.eng_word} >'
+        return f'<id {self.id}, word: {self.eng_word}, [{self.ts}] >'
 
 class Example(db.Model):
     __tablename__ = 'examples'
