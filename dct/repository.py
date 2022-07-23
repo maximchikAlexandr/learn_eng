@@ -58,13 +58,25 @@ class DictDB:
     def get_word(self, id_word):
         return EngWord.query.filter(EngWord.id == id_word).one()
 
-# {'text': 'fill', 'ts': 'fɪl', 'tr': {'глагол': ['заполнять', 'заполнить'], 'существительное': ['заполнение', 'наполнение', 'заливка']}, 'ex': {'глагол': ['fill the space – заполнять пространство', 'fill the vacancy – заполнить вакансию', 'fill the earth – наполнять землю', 'filled polymer – наполненный полимер', 'fill with water – заливать водой', 'fill the tank – заправить бак', 'fill the gap – восполнить пробел', 'fill a pipe – набивать трубку'], 'существительное': ['fill factor – коэффициент заполнения', 'degree of filling – степень наполнения', 'background fill – заливка фона']}}
-# dictDB.add_word(getEngTranslate('hand'))
     def add_word(self, eng_word_dct):
         eng_word_model = EngWord(eng_word=eng_word_dct['text'],
                     ts=eng_word_dct['ts'])
 
         self.__db.session.add(eng_word_model)
+        self.__db.session.commit()
+
+        examples_lst = []
+
+        for pos, examples in eng_word_dct['ex'].items():
+            for ex in examples:
+                example_model = Example(
+                    example = ex,
+                    pos = pos,
+                    id_eng_word = eng_word_model.id
+                )
+                examples_lst.append(example_model)
+
+        self.__db.session.add_all(examples_lst)
         self.__db.session.commit()
 
         return True
