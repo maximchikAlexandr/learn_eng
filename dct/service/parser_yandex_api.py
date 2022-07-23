@@ -2,7 +2,7 @@ import requests, pprint
 
 from  dct.service.config_yandex_dct import yandexDictonaryKey
 
-def get_examples(response):
+def _get_examples(response):
     res_dct = {}
     for pos in response['def']:
         key, values = pos['pos'], []
@@ -15,7 +15,7 @@ def get_examples(response):
     return res_dct
 
 
-def get_synonyms(response):
+def _get_synonyms(response):
     res_dct = {}
     for pos in response['def']:
         key, values = pos['pos'], []
@@ -27,15 +27,16 @@ def get_synonyms(response):
     return res_dct
 
 
-def get_transcriprion(response):
+def _get_transcriprion(response):
     return response['def'][0].get('ts', '') if response['def'] else ''
 
 
-def getEngTranslate(findWord):
+def getEngTranslate(findWord) -> dict:
     URL = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=" + yandexDictonaryKey + \
           "&lang=en-ru&text=" + findWord + "&ui=ru"
     res = requests.get(URL).json()
 
-    return {'ts' : get_transcriprion(res),
-            'tr' : get_synonyms(res),
-            'ex' : get_examples(res)}
+    return {'text' : findWord,
+            'ts' : _get_transcriprion(res),
+            'tr' : _get_synonyms(res),
+            'ex' : _get_examples(res)}
