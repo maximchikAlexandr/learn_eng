@@ -10,8 +10,7 @@ from dct.models import (
     Example,
     EngWord,
     TrRusWord,
-    PartOfSpeech,
-    eng_rus_words
+    PartOfSpeech
     )
 
 def _wapper_error(flashed_message):
@@ -71,15 +70,21 @@ class DictDB:
         self.__db.session.add_all(pos_lst)
         self.__db.session.commit()
 
-    def add_word(self, eng_word_dct):
-        eng_word_model = EngWord(eng_word=eng_word_dct['text'],
-                    ts=eng_word_dct['ts'])
+    def _add_all_examples(self, eng_word_dct, eng_word_model):
+        examples_lst = []
+        for pos, examples in eng_word_dct['ex'].items():
+            for ex in examples:
+                example_model = Example(
+                    example=ex,
+                    id_pos=PartOfSpeech.query.filter(PartOfSpeech.pos == pos).first().id,
+                    id_eng_word=eng_word_model.id
+                )
+                examples_lst.append(example_model)
 
-        self._add_all_pos(eng_word_dct)
+        self.__db.session.add_all(examples_lst)
+        self.__db.session.commit()
 
-        # add all russian words
-        # in: dict 'eng_word_dct', SQLAlchemy 'eng_word_model'
-        # out: None
+    def _add_all_rus_words(self, eng_word_dct, eng_word_model):
         rus_words_lst = []
         for pos, tr_lst in eng_word_dct['tr'].items():
             for tr in tr_lst:
@@ -97,21 +102,16 @@ class DictDB:
         self.__db.session.add_all(rus_words_lst)
         self.__db.session.commit()
 
-        # add examples
-        # in: dict 'eng_word_dct', SQLAlchemy 'eng_word_model'
-        # out: None
-        examples_lst = []
-        for pos, examples in eng_word_dct['ex'].items():
-            for ex in examples:
-                example_model = Example(
-                    example = ex,
-                    id_pos = PartOfSpeech.query.filter(PartOfSpeech.pos == pos).first().id,
-                    id_eng_word = eng_word_model.id
-                )
-                examples_lst.append(example_model)
+
+    def add_word(self, eng_word_dct):
+        eng_word_model = EngWord(eng_word=eng_word_dct['text'],
+                                ts=eng_word_dct['ts'])
+
+        self._add_all_pos(eng_word_dct)
+        self._add_all_rus_words(eng_word_dct, eng_word_model)
+        self._add_all_examples(eng_word_dct, eng_word_model)
 
         self.__db.session.add(eng_word_model)
-        self.__db.session.add_all(examples_lst)
         self.__db.session.commit()
 
         return True
