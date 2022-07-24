@@ -61,18 +61,28 @@ class DictDB:
     def get_word(self, id_word):
         return EngWord.query.filter(EngWord.id == id_word).one()
 
+
+
+
     def add_word(self, eng_word_dct):
         eng_word_model = EngWord(eng_word=eng_word_dct['text'],
                     ts=eng_word_dct['ts'])
 
         # add all parts of speech
+        # in: dict 'eng_word_dct'
+        # out: None
+        pos_lst = []
         for pos in ChainMap(eng_word_dct['tr'], eng_word_dct['ex']):
             if not PartOfSpeech.query.filter(PartOfSpeech.pos == pos).all():
                 pos_model = PartOfSpeech(pos=pos)
-                self.__db.session.add(pos_model)
-                self.__db.session.commit()
+                pos_lst.append(pos_model)
+
+        self.__db.session.add_all(pos_lst)
+        self.__db.session.commit()
 
         # add all russian words
+        # in: dict 'eng_word_dct', SQLAlchemy 'eng_word_model'
+        # out: None
         rus_words_lst = []
         for pos, tr_lst in eng_word_dct['tr'].items():
             for tr in tr_lst:
@@ -91,6 +101,8 @@ class DictDB:
         self.__db.session.commit()
 
         # add examples
+        # in: dict 'eng_word_dct', SQLAlchemy 'eng_word_model'
+        # out: None
         examples_lst = []
         for pos, examples in eng_word_dct['ex'].items():
             for ex in examples:
