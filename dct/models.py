@@ -42,7 +42,7 @@ class Example(db.Model):
     __tablename__ = 'examples'
     id = db.Column(db.Integer(), primary_key=True)
     example = db.Column(db.String(40), nullable=False)
-    pos = db.Column(db.String(20), nullable=False)
+    id_pos = db.Column(db.Integer, db.ForeignKey('parts_of_speech.id'), nullable=False)
     id_eng_word = db.Column(db.Integer, db.ForeignKey('eng_words.id'),nullable=False)
 
     def __repr__(self):
@@ -52,7 +52,17 @@ class TrRusWord(db.Model):
     __tablename__ = 'tr_rus_word'
     id = db.Column(db.Integer(), primary_key=True)
     rus_word = db.Column(db.String(40), nullable=False, unique=True)
-    pos = db.Column(db.String(20), nullable=False)
+    id_pos = db.Column(db.Integer, db.ForeignKey('parts_of_speech.id'), nullable=False)
 
     def __repr__(self):
         return f'<id {self.id}, rus word: {self.rus_word} >'
+
+class PartOfSpeech(db.Model):
+    __tablename__ = 'parts_of_speech'
+    id = db.Column(db.Integer(), primary_key=True)
+    pos = db.Column(db.String(20), nullable=False, unique=True)
+    ex = db.relationship('Example', backref='pos', lazy=True)
+    tr_rus_words = db.relationship('TrRusWord', backref='pos', lazy=True)
+
+    def __repr__(self):
+        return f'<id {self.id}, part of speech: {self.pos} >'

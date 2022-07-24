@@ -1,5 +1,6 @@
 import math
 import time
+from collections import ChainMap
 
 from flask import flash
 
@@ -8,7 +9,8 @@ from dct.models import (
     Text,
     Example,
     EngWord,
-    TrRusWord
+    TrRusWord,
+    PartOfSpeech
     )
 
 def _wapper_error(flashed_message):
@@ -65,15 +67,22 @@ class DictDB:
         self.__db.session.add(eng_word_model)
         self.__db.session.commit()
 
-        examples_lst = []
+        # add all patrs of speech
+        for pos in ChainMap(eng_word_dct['tr'], eng_word_dct['ex']):
+            if not PartOfSpeech.query.filter(PartOfSpeech.pos == pos).all():
+                pos_model = PartOfSpeech(pos=pos)
+                self.__db.session.add(pos_model)
+                self.__db.session.commit()
 
+        examples_lst = []
         for pos, examples in eng_word_dct['ex'].items():
             for ex in examples:
                 example_model = Example(
                     example = ex,
-                    pos = pos,
+                    id_pos = PartOfSpeech.query.filter(PartOfSpeech.pos == pos).first().id,
                     id_eng_word = eng_word_model.id
                 )
+
                 examples_lst.append(example_model)
 
         self.__db.session.add_all(examples_lst)
