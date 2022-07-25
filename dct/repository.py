@@ -67,6 +67,19 @@ class DictDB:
     def get_list_of_words(self, id_text):
         return Text.query.filter(Text.id == id_text).first().words
 
+    def add_word(self, eng_word_dct):
+        eng_word_model = EngWord(eng_word=eng_word_dct['text'],
+                                ts=eng_word_dct['ts'])
+
+        self._add_all_pos(eng_word_dct)
+        self._add_all_rus_words(eng_word_dct, eng_word_model)
+        self._add_all_examples(eng_word_dct, eng_word_model)
+
+        self.__db.session.add(eng_word_model)
+        self.__db.session.commit()
+
+        return eng_word_model
+
     def is_existing_word(self, eng_word):
         return bool(EngWord.query.filter(EngWord.eng_word == eng_word).all())
 
