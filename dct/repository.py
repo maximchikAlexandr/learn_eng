@@ -5,6 +5,7 @@ from collections import ChainMap
 from flask import flash
 
 from dct import db
+from dct.service import getEngTranslate, get_unic_words
 from dct.models import (
     Text,
     Example,
@@ -38,9 +39,21 @@ class DictDB:
                     time=tm,
                     id_user=1) # replace!!!
 
-        self.__db.session.add(text_model)
-        self.__db.session.commit()
-        return True
+        if not self.is_existing_text(text):
+            for word in get_unic_words(text):
+
+                if self.is_existing_word(word):
+                    eng_word_model = EngWord.query.filter(EngWord.eng_word == word).first()
+                else:
+                    eng_word_model = self.add_word(getEngTranslate(word))
+
+                text_model.words.append(eng_word_model)
+
+            self.__db.session.add(text_model)
+            self.__db.session.commit()
+            return True
+
+        return False
 
     def is_existing_text(self, text):
         return bool(Text.query.filter(Text.text == text).all())
@@ -103,18 +116,7 @@ class DictDB:
         self.__db.session.commit()
 
 
-    def add_word(self, eng_word_dct):
-        eng_word_model = EngWord(eng_word=eng_word_dct['text'],
-                                ts=eng_word_dct['ts'])
 
-        self._add_all_pos(eng_word_dct)
-        self._add_all_rus_words(eng_word_dct, eng_word_model)
-        self._add_all_examples(eng_word_dct, eng_word_model)
-
-        self.__db.session.add(eng_word_model)
-        self.__db.session.commit()
-
-        return True
 
 
 dictDB = DictDB(db)
