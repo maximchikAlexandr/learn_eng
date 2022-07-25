@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <link type="text/css" rel="stylesheet" href="E:\YandexDisk\Python\projects\learn_eng\static\css\bootstrap.css">
+    <link href="{{ url_for('.static', filename='css/bootstrap.css') }}" rel="stylesheet">
+
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -58,6 +59,7 @@
     </style>
     <!-- Custom styles for this template -->
     <link href="https://getbootstrap.com/docs/5.2/examples/pricing/pricing.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -97,16 +99,19 @@
 
 
         <main>
-            <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-                <h1 class="display-6 fw-normal">Title</h1>
-            </div>
             <!--Contain-->
             <div class="row row-cols-1 row-cols-md-12 mb-3 text-center">
                 <span class="mb-12 mb-md-0 text-muted">
-
+                {% block content %}
+                {% endblock %}
                 </span>
             </div>
         </main>
+
+
+
+
+
 
         <div class="container">
             <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
@@ -118,7 +123,7 @@
             </footer>
         </div>
     </div>
-    <script src="E:\YandexDisk\Python\projects\learn_eng\static\js\bootstrap.js"></script>
+     <script src="{{ url_for('.static', filename='js/bootstrap.js') }}"></script>
 </body>
 
 </html>
