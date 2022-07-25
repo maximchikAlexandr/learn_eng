@@ -3,6 +3,7 @@ import time
 from collections import ChainMap
 
 from flask import flash
+from flask_login import current_user
 
 from dct import db
 from dct.service import getEngTranslate, get_unic_words
@@ -37,7 +38,7 @@ class DictDB:
         tm = math.floor(time.time())  # Save time
         text_model = Text(text=text,
                     time=tm,
-                    id_user=1) # replace!!!
+                    id_user=current_user.get_id())
 
         if not self.is_existing_text(text):
             for word in get_unic_words(text):
@@ -59,7 +60,7 @@ class DictDB:
         return bool(Text.query.filter(Text.text == text).all())
 
     def get_text(self, id_text):
-        return Text.query.filter(Text.id == id_text).one()
+        return Text.query.filter(Text.id == id_text).fisrt()
 
     def get_list_of_texts(self, id_user):
         return Text.query.filter(Text.id_user == id_user).all()
@@ -127,9 +128,6 @@ class DictDB:
 
         self.__db.session.add_all(rus_words_lst)
         self.__db.session.commit()
-
-
-
 
 
 dictDB = DictDB(db)
