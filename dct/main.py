@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template
 from flask_login import login_required
 
-from dct.service.string_handler import get_test_text
 
 dct_bp = Blueprint('dct', __name__, template_folder='templates', static_folder='static')
 
@@ -24,5 +23,4 @@ def add_text():
 @dct_bp.route('/show_text', methods=['GET', 'POST'])
 @login_required
 def show_text():
-    words = get_test_text()
     return render_template('dct/show_text.html', words=words)

@@ -1,6 +1,13 @@
-import requests, pprint
+import re
 
-from  dct.service.config_yandex_dct import yandexDictonaryKey
+import requests
+
+from dct.config_yandex_dct import yandexDictonaryKey
+
+
+def get_unic_words(text: str) -> list:
+    clean_text = re.sub('[^a-zA-Z]', ' ', text).lower()
+    return sorted(set(clean_text.split()))
 
 def _get_examples(response):
     res_dct = {}
