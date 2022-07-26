@@ -34,9 +34,10 @@ class DictDB:
         self.__db = db
 
     @_wapper_error('Error of DB: text is not unique')
-    def add_text(self, text):
+    def add_text(self, text, title):
         tm = math.floor(time.time())  # Save time
         text_model = Text(text=text,
+                    title=title,
                     time=tm,
                     id_user=current_user.get_id())
 

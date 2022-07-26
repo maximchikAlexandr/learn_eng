@@ -20,7 +20,8 @@ def list():
 @login_required
 def add_text():
     if request.method == 'POST':
-        dictDB.add_text(request.form['text'])
+        dictDB.add_text(text = request.form['text'],
+                        title = request.form['title'])
 
     return render_template('dct/add_text.html', title='Adding')
 

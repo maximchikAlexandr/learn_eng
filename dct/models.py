@@ -16,6 +16,7 @@ class Text(db.Model):
     __tablename__ = 'texts'
     id = db.Column(db.Integer(), primary_key=True)
     text = db.Column(db.Text(), nullable=False, unique=True)
+    title = db.Column(db.Text(), nullable=False)
     time = db.Column(db.Integer(), nullable=False)
     id_user = db.Column(db.Integer(), nullable=False)
 
