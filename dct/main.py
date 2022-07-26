@@ -11,11 +11,6 @@ def index():
     return render_template('dct/index.html')
 
 
-@dct_bp.route('/list', methods=['GET', 'POST'])
-@login_required
-def list():
-    return 'list'
-
 @dct_bp.route('/add_text', methods=['GET', 'POST'])
 @login_required
 def add_text():
