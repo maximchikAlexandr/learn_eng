@@ -7,7 +7,7 @@
 <main class="form-signin w-100 m-auto">
   <form action="add_text" method="POST">
 
-    <h1 class="h3 mb-3 fw-normal">{{ title }}</h1>
+    <h1 class="h3 mb-3 fw-normal text-center">{{ title }}</h1>
     <!-- Flashed messages -->
 
     {% for cat, msg in get_flashed_messages(True) %}
@@ -16,18 +16,19 @@
     </div>
     {% endfor %}
 
-    <div class="form-floating">
-      <input name="title" type="text" class="form-control" id="floatingInput" placeholder="">
-      <label for="floatingInput">Title</label>
+    <div class="mb-3 text-start">
+      <label for="exampleFormControlInput1" class="form-label">Title</label>
+      <input name="title" type="text" class="form-control" id="exampleFormControlInput1">
+    </div>
+    <div class="mb-3 text-start">
+      <label for="exampleFormControlTextarea1" class="form-label">Text </label>
+      <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="10"></textarea>
     </div>
 
-    <div class="form-floating">
-      <input name="text" type="text" class="form-control" id="floatingInput" placeholder="">
-      <label for="floatingInput">Text</label>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button class="btn btn-primary col-2" type="submit">Add</button>
     </div>
 
-
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
 
   </form>
 </main>

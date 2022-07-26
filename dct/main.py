@@ -23,7 +23,7 @@ def add_text():
         dictDB.add_text(text = request.form['text'],
                         title = request.form['title'])
 
-    return render_template('dct/add_text.html', title='Adding')
+    return render_template('dct/add_text.html', title='Adding a new text')
 
 @dct_bp.route('/show_text', methods=['GET', 'POST'])
 @login_required
