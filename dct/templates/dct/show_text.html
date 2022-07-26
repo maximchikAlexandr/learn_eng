@@ -1,10 +1,8 @@
-<table>
-{% for word, items in words.items() %}
-     <tr>
-          <td>{{word}}</td>
-          <td>{{items['ts']}}</td>
-          <td> {{items['tr']}}</td>
-          <td>{{items['ex']}}</td>
-     </tr>
-{% endfor %}
-</table>
+{% extends 'dct/base.html' %}
+
+{% block content %}
+{{ super() }}
+
+    <p>Text
+
+{% endblock %}
