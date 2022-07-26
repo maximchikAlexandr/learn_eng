@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, flash
 from flask_login import login_required
 
 from dct.repository import dictDB
@@ -15,8 +15,12 @@ def index():
 @login_required
 def add_text():
     if request.method == 'POST':
-        dictDB.add_text(text = request.form['text'],
-                        title = request.form['title'])
+        if request.form['text'] and request.form['title']:
+            dictDB.add_text(text = request.form['text'],
+                            title = request.form['title'])
+            flash('Text added successfully', category='success')
+        else:
+            flash('Please fill all fields', category='danger')
 
     return render_template('dct/add_text.html', title='Adding a new text')
 

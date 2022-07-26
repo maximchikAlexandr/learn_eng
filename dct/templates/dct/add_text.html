@@ -10,11 +10,11 @@
     <h1 class="h3 mb-3 fw-normal text-center">{{ title }}</h1>
     <!-- Flashed messages -->
 
-    {% for cat, msg in get_flashed_messages(True) %}
-    <div class="row bg-{{cat}} bg-opacity-50 border border-{{cat}} text-white">
-      <div class="flash">{{msg}}</div>
-    </div>
-    {% endfor %}
+      {% for cat, msg in get_flashed_messages(True) %}
+      <div class="row bg-{{cat}} bg-opacity-50 border border-{{cat}} text-white">
+        <div class="flash">{{msg}}</div>
+      </div>
+      {% endfor %}
 
     <div class="mb-3 text-start">
       <label for="exampleFormControlInput1" class="form-label">Title</label>
