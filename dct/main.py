@@ -1,14 +1,23 @@
+from collections import namedtuple
+
 from flask import Blueprint, render_template, request, flash
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from dct.repository import dictDB
+from dct.service import sec_to_datetime
 
 dct_bp = Blueprint('dct', __name__, template_folder='templates', static_folder='static')
+txt_tpl = namedtuple('txt', ['title', 'datetime'])
 
 @dct_bp.route('/main', methods=['GET', 'POST'])
 @login_required
 def index():
-    return render_template('dct/index.html')
+    texts = dictDB.get_list_of_texts(id_user=current_user.get_id())
+    info_of_texts = [txt_tpl(title=txt.title, datetime=sec_to_datetime(txt.time)) for txt in texts]
+    
+    return render_template('dct/index.html',
+                           title='Texts',
+                           texts=info_of_texts)
 
 
 @dct_bp.route('/add_text', methods=['GET', 'POST'])
