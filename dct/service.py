@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 import requests
 
@@ -49,3 +50,7 @@ def getEngTranslate(findWord) -> dict:
             'ts' : _get_transcriprion(res),
             'tr' : _get_synonyms(res),
             'ex' : _get_examples(res)}
+
+
+def sec_to_datetime(sec: int) -> str:
+    return datetime.fromtimestamp(sec).strftime('%Y-%m-%d %H:%M')
