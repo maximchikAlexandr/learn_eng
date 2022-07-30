@@ -61,8 +61,12 @@ class DictDB:
         return bool(Text.query.filter(Text.text == text).all())
 
     def get_text(self, id_text):
-        return Text.query.filter(Text.id == id_text).fisrt()
+        return Text.query.filter(Text.id == id_text).one()
 
+    def remove_text(self, id_text):
+        text = self.get_text(id_text)
+        self.__db.session.delete(text)
+        self.__db.session.commit()
 
     def get_paginate(self, id_user, page, per_page):
         return Text.query.filter(Text.id_user == id_user).paginate(page=page,
