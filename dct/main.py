@@ -1,6 +1,4 @@
-from collections import namedtuple
-
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
 from dct.repository import dictDB
@@ -38,6 +36,13 @@ def add_text():
             flash('Please fill all fields', category='danger')
 
     return render_template('dct/add_text.html', title='Adding a new text')
+
+
+@dct_bp.route('/remove-<int:id_text>', methods=['GET', 'POST'])
+@login_required
+def remove_text(id_text):
+    dictDB.remove_text(id_text=id_text)
+    return redirect(url_for('.index'))
 
 @dct_bp.route('/show_text', methods=['GET', 'POST'])
 @login_required
