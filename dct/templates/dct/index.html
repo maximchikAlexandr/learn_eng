@@ -14,12 +14,36 @@
 		<form action="/dct/show_text">
 			<button type="submit" class="btn btn-outline-success">Open</button>
 		</form>
-		<form action="./remove-{{ txt.id }}">
-			<button type="submit" class="btn btn-outline-danger">Remove</button>
+		<!-- Button trigger modal-->
+		<form action="">
+			<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal_id_{{ txt.id }}">
+				Remove
+			</button>
 		</form>
 	</div>
-
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal_id_{{ txt.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Remove text «{{ txt.title }}»? </h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<form action="./remove-{{ txt.id }}">
+					<button type="submit" class="btn btn-outline-danger" data-bs-toggle="modal"
+						data-bs-target="#exampleModal">
+						Remove
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 {% endfor %}
 
 <!-- Paginate -->
