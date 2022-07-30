@@ -7,17 +7,23 @@ from dct.repository import dictDB
 from dct.service import sec_to_datetime
 
 dct_bp = Blueprint('dct', __name__, template_folder='templates', static_folder='static')
-txt_tpl = namedtuple('txt', ['title', 'datetime'])
+PER_PAGE = 6
 
-@dct_bp.route('/main', methods=['GET', 'POST'])
+@dct_bp.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    texts = dictDB.get_list_of_texts(id_user=current_user.get_id())
-    info_of_texts = [txt_tpl(title=txt.title, datetime=sec_to_datetime(txt.time)) for txt in texts]
+    page = request.args.get('page')
+    page = int(page) if page and page.isdigit() else 1
+    pages = dictDB.get_paginate(id_user=current_user.get_id(),
+                                page=page,
+                                per_page=PER_PAGE)
+
+    dates = {txt.id : sec_to_datetime(txt.time) for txt in pages.items}
     
     return render_template('dct/index.html',
                            title='Texts',
-                           texts=info_of_texts)
+                           pages=pages,
+                           dates=dates)
 
 
 @dct_bp.route('/add_text', methods=['GET', 'POST'])

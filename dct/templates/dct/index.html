@@ -3,45 +3,54 @@
 {% block content %}
 {{ super() }}
 <h1 class="h3 mb-3 fw-normal text-center mb-5">{{ title }}</h1>
-		{% for txt in texts %}
-			<div class="row mb-3 pt-3 border-top">
-				<p class="col-2">{{ txt['datetime'] }}</p>
+{% for txt in pages.items %}
+<div class="row mb-3 pt-3 border-top">
+	<p class="col-2">{{ dates.get(txt.id) }}</p>
 
 
-				<a class="col-6 mb-4 text-secondary text-decoration-none" href="/dct/show_text"> {{txt['title']}}</a>
+	<a class="col-6 mb-4 text-secondary text-decoration-none" href="/dct/show_text"> {{ txt.title }}</a>
 
-				<div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
-
-
-					<form action="/dct/show_text">
-						<button type="submit" class="btn btn-outline-success">Open</button>
-					</form>
-					<form action="">
-						<button type="submit" class="btn btn-outline-danger">Remove</button>
-					</form>
-				</div>
-
-			</div>
-    	{% endfor %}
+	<div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
 
 
+		<form action="/dct/show_text">
+			<button type="submit" class="btn btn-outline-success">Open</button>
+		</form>
+		<form action="">
+			<button type="submit" class="btn btn-outline-danger">Remove</button>
+		</form>
+	</div>
+
+</div>
+{% endfor %}
+
+<!-- Paginate -->
 <nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center text-secondary">
-    <li class="page-item">
-      <a class="page-link text-secondary" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link text-secondary" href="#">1</a></li>
-    <li class="page-item"><a class="page-link text-secondary" href="#">2</a></li>
-    <li class="page-item"><a class="page-link text-secondary" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link text-secondary" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
+	<ul class="pagination justify-content-center text-secondary">
 
+		<li {% if pages.has_prev %} class="page-item" {% else %} class="page-item disabled" {% endif %}>
+			<a class="page-link text-secondary" href="./?page={{ pages.prev_num }}" aria-label="Previous">
+				<span aria-hidden="false">&laquo;</span>
+			</a>
+		</li>
+
+		{% for page in pages.iter_pages() %}
+		{% if page == pages.page %}
+		<li class="page-item active" aria-current="page"> <span class="page-link"> {{page}} </span> </li>
+		{% else %}
+		<li class="page-item"><a class="page-link text-secondary" href="./?page={{ page }}"> {{page}} </a></li>
+		{% endif %}
+		{% endfor %}
+
+
+
+		<li {% if pages.has_next %} class="page-item" {% else %} class="page-item disabled" {% endif %}>
+			<a class="page-link text-secondary" href="./?page={{ pages.next_num }}" aria-label="Next">
+				<span aria-hidden="true">&raquo;</span>
+			</a>
+		</li>
+
+	</ul>
+</nav>
 
 {% endblock %}
