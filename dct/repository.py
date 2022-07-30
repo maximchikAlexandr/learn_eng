@@ -63,8 +63,10 @@ class DictDB:
     def get_text(self, id_text):
         return Text.query.filter(Text.id == id_text).fisrt()
 
-    def get_list_of_texts(self, id_user):
-        return Text.query.filter(Text.id_user == id_user).all()
+
+    def get_paginate(self, id_user, page, per_page):
+        return Text.query.filter(Text.id_user == id_user).paginate(page=page,
+                                                                   per_page=per_page)
 
     def get_list_of_words(self, id_text):
         return Text.query.filter(Text.id == id_text).first().words
