@@ -3,21 +3,35 @@
 {% block content %}
 {{ super() }}
 
-    <h5>{{text.title}}</h5>
-    <table>
-    {% for wrd in text.words %}
-        <tr>
-            <td>{{ wrd.eng_word }}</td>
-        </tr>
-        <tr>
-            <td>[{{ wrd.ts }}]</td>
-            <td>
-                {% for rus_wrd in wrd.translated_words %}
-                    {{rus_wrd.rus_word}};
-                {% endfor %}
-            </td>
-        </tr>
+<h5>{{text.title}}</h5>
 
-    {% endfor %}
-     </table>
+{% for wrd in text.words %}
+
+<div class="row mb-2 pt-2 border-top">
+  <a data-bs-toggle="collapse" class="text-decoration-none" href="#collapseExample_{{ wrd.id }}" role="button"
+    aria-expanded="false" aria-controls="collapseExample_{{ wrd.id }}">
+    <strong class="h5">{{ wrd.eng_word }}</strong>
+    <em class="text-muted">[{{ wrd.ts }}]</em>
+  </a>
+
+</div>
+
+<div class="collapse" id="collapseExample_{{ wrd.id }}">
+  <div class="card card-body">
+
+    <p>{% for rus_wrd in wrd.translated_words %}
+      {{rus_wrd.rus_word}};
+      {% endfor %}
+    <p>
+      {% for ex in wrd.examples %}
+      <br>{{ex.example}};
+      {% endfor %}
+
+  </div>
+</div>
+
+
+{% endfor %}
+
+
 {% endblock %}
