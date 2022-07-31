@@ -68,7 +68,7 @@ class DictDB:
         self.__db.session.delete(text)
         self.__db.session.commit()
 
-    def get_paginate(self, id_user, page, per_page):
+    def get_text_paginate(self, id_user, page, per_page):
         return Text.query.filter(Text.id_user == id_user).paginate(page=page,
                                                                    per_page=per_page)
 
@@ -93,6 +93,10 @@ class DictDB:
 
     def get_word(self, id_word):
         return EngWord.query.filter(EngWord.id == id_word).one()
+
+    def get_word_paginate(self, id_word, page, per_page):
+        return EngWord.query.filter(EngWord.id == id_word).paginate(page=page,
+                                                                   per_page=per_page)
 
     def _add_all_pos(self, eng_word_dct):
         pos_lst = []
