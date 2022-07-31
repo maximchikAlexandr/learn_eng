@@ -8,10 +8,10 @@
 	<p class="col-2">{{ dates.get(txt.id) }}</p>
 
 
-	<a class="col-6 mb-4 text-secondary text-decoration-none" href="/dct/show_text"> {{ txt.title }}</a>
+	<a class="col-6 mb-4 text-secondary text-decoration-none" href="/dct/show_text-{{ txt.id }}"> {{ txt.title }}</a>
 
 	<div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
-		<form action="/dct/show_text">
+		<form action="/dct/show_text-{{ txt.id }}">
 			<button type="submit" class="btn btn-outline-success">Open</button>
 		</form>
 		<!-- Button trigger modal-->
@@ -33,7 +33,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				<form action="./remove-{{ txt.id }}">
+				<form action="./remove_text-{{ txt.id }}">
 					<button type="submit" class="btn btn-outline-danger" data-bs-toggle="modal"
 						data-bs-target="#exampleModal">
 						Remove
