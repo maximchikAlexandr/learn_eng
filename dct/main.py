@@ -5,16 +5,17 @@ from dct.repository import dictDB
 from dct.service import sec_to_datetime
 
 dct_bp = Blueprint('dct', __name__, template_folder='templates', static_folder='static')
-PER_PAGE = 6
+PER_PAGE_TEXTS = 6
+PER_PAGE_WORDS = 10
 
 @dct_bp.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
     page = request.args.get('page')
     page = int(page) if page and page.isdigit() else 1
-    pages = dictDB.get_paginate(id_user=current_user.get_id(),
+    pages = dictDB.get_text_paginate(id_user=current_user.get_id(),
                                 page=page,
-                                per_page=PER_PAGE)
+                                per_page=PER_PAGE_TEXTS)
 
     dates = {txt.id : sec_to_datetime(txt.time) for txt in pages.items}
     
@@ -38,13 +39,15 @@ def add_text():
     return render_template('dct/add_text.html', title='Adding a new text')
 
 
-@dct_bp.route('/remove-<int:id_text>', methods=['GET', 'POST'])
+@dct_bp.route('/remove_text-<int:id_text>', methods=['GET', 'POST'])
 @login_required
 def remove_text(id_text):
     dictDB.remove_text(id_text=id_text)
     return redirect(url_for('.index'))
 
-@dct_bp.route('/show_text', methods=['GET', 'POST'])
+@dct_bp.route('/show_text-<int:id_text>', methods=['GET', 'POST'])
 @login_required
-def show_text():
-    return render_template('dct/show_text.html')
+def show_text(id_text):
+    current_text = dictDB.get_text(id_text=id_text)
+    return render_template('dct/show_text.html',
+                           text=current_text)

@@ -3,6 +3,21 @@
 {% block content %}
 {{ super() }}
 
-    <p>Text
+    <h5>{{text.title}}</h5>
+    <table>
+    {% for wrd in text.words %}
+        <tr>
+            <td>{{ wrd.eng_word }}</td>
+        </tr>
+        <tr>
+            <td>[{{ wrd.ts }}]</td>
+            <td>
+                {% for rus_wrd in wrd.translated_words %}
+                    {{rus_wrd.rus_word}};
+                {% endfor %}
+            </td>
+        </tr>
 
+    {% endfor %}
+     </table>
 {% endblock %}
