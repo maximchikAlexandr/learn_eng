@@ -48,6 +48,8 @@ def remove_text(id_text):
 @dct_bp.route('/show_text-<int:id_text>', methods=['GET', 'POST'])
 @login_required
 def show_text(id_text):
-    current_text = dictDB.get_text(id_text=id_text)
+    words = dictDB.get_dct_words(id_text=id_text)
+    title = dictDB.get_text(id_text=id_text).title
     return render_template('dct/show_text.html',
-                           text=current_text)
+                           words=words,
+                           title=title)

@@ -3,29 +3,43 @@
 {% block content %}
 {{ super() }}
 
-<h5>{{text.title}}</h5>
-
-{% for wrd in text.words %}
+<h5> {{  title  }} </h5>
+{% for wrd in words %}
 
 <div class="row mb-2 pt-2 border-top">
-  <a data-bs-toggle="collapse" class="text-decoration-none" href="#collapseExample_{{ wrd.id }}" role="button"
-    aria-expanded="false" aria-controls="collapseExample_{{ wrd.id }}">
-    <strong class="h5">{{ wrd.eng_word }}</strong>
-    <em class="text-muted">[{{ wrd.ts }}]</em>
+  <a data-bs-toggle="collapse" class="text-decoration-none" href="#collapseExample_{{ wrd['id'] }}" role="button"
+    aria-expanded="false" aria-controls="collapseExample_{{ wrd['id'] }}">
+    <strong class="h5">{{ wrd['text'] }}</strong>
+    <em class="text-muted">[{{ wrd['ts'] }}]</em>
   </a>
 
 </div>
 
-<div class="collapse" id="collapseExample_{{ wrd.id }}">
+<div class="collapse" id="collapseExample_{{ wrd['id'] }}">
   <div class="card card-body">
 
-    <p>{% for rus_wrd in wrd.translated_words %}
-      {{rus_wrd.rus_word}};
-      {% endfor %}
-    <p>
-      {% for ex in wrd.examples %}
-      <br>{{ex.example}};
-      {% endfor %}
+
+    <p><strong class="h6"> Translated words </strong></p>
+    {% for rus_wrd in wrd['tr'] %}
+    {% for pos, tr in rus_wrd.items() %}
+    <p></p>
+    <p><em class="text-muted">{{ pos }}: </em>
+    {% for wrd in tr %}
+    {{ wrd }};
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+
+    <p><strong class="h6"> Examples </strong></p>
+    {% for rus_wrd in wrd['ex'] %}
+    {% for pos, ex in rus_wrd.items() %}
+    <p></p>
+    <p><em class="text-muted">{{ pos }}: </em>
+    {% for wrd in ex %}
+    <br>{{ wrd }};
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
 
   </div>
 </div>
