@@ -18,14 +18,14 @@
 <div class="collapse" id="collapseExample_{{ wrd['id'] }}">
   <div class="card card-body">
 
-
+    {% if wrd['tr'] %}
     <br><strong class="h6"> Translated words </strong></br>
     <table class="table table-hover">
       {% for rus_wrd in wrd['tr'] %}
       {% for pos, tr in rus_wrd.items() %}
 
       <tr>
-        <td><em class="text-muted">{{ pos }}: </em></td>
+        <td><em class="text-muted">{{ pos }} </em></td>
         <td>
           {% for wrd in tr %}
           {{ wrd }};
@@ -36,29 +36,28 @@
       {% endfor %}
       {% endfor %}
     </table>
+    {% endif %}
+
 
 {% if wrd['ex'] %}
     <p><strong class="h6"> Examples </strong></p>
-
-    <dl class="row">
-
+    <table class="table table-hover">
 
       {% for rus_wrd in wrd['ex'] %}
       {% for pos, ex in rus_wrd.items() %}
+      {% for wrd in ex %}
 
-      <dt class="col-4">
-        <p><em class="text-muted">{{ pos }}: </em>
-          {% for wrd in ex %}
-          <br> {{ wrd }};
-          {% endfor %}
-      </dt>
-
-
+      <tr>
+        <td><em class="text-muted">{{ pos }} </em> </td>
+        <td>{{ wrd }};</td>
+      </tr>
 
       {% endfor %}
       {% endfor %}
-      {% endif %}
-    </dl>
+      {% endfor %}
+    </table>
+    {% endif %}
+
   </div>
 </div>
 
