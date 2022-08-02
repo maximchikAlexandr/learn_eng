@@ -3,8 +3,7 @@ from datetime import datetime
 
 import requests
 
-from dct.config_yandex_dct import yandexDictonaryKey
-
+from config import yandexDictonaryKey
 
 def get_unic_words(text: str) -> list:
     clean_text = re.sub('[^a-zA-Z]', ' ', text).lower()
