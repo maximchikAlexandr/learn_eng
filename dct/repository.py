@@ -47,8 +47,10 @@ class DictDB:
                 if self.is_existing_word(word):
                     eng_word_model = EngWord.query.filter(EngWord.eng_word == word).first()
                 else:
-                    eng_word_model = self.add_word(getEngTranslate(word))
-
+                    eng_word_dct = getEngTranslate(word)
+                    if eng_word_dct['tr']:
+                        eng_word_model = self.add_word(eng_word_dct)
+                    else: continue
                 text_model.words.append(eng_word_model)
 
             self.__db.session.add(text_model)
