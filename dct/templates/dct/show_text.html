@@ -3,7 +3,7 @@
 {% block content %}
 {{ super() }}
 
-<h5> {{  title  }} </h5>
+<h5> {{ title }} </h5>
 {% for wrd in words %}
 
 <div class="row mb-2 pt-2 border-top">
@@ -19,28 +19,46 @@
   <div class="card card-body">
 
 
-    <p><strong class="h6"> Translated words </strong></p>
-    {% for rus_wrd in wrd['tr'] %}
-    {% for pos, tr in rus_wrd.items() %}
-    <p></p>
-    <p><em class="text-muted">{{ pos }}: </em>
-    {% for wrd in tr %}
-    {{ wrd }};
-    {% endfor %}
-    {% endfor %}
-    {% endfor %}
+    <br><strong class="h6"> Translated words </strong></br>
+    <table class="table table-hover">
+      {% for rus_wrd in wrd['tr'] %}
+      {% for pos, tr in rus_wrd.items() %}
 
+      <tr>
+        <td><em class="text-muted">{{ pos }}: </em></td>
+        <td>
+          {% for wrd in tr %}
+          {{ wrd }};
+          {% endfor %}
+        </td>
+      </tr>
+
+      {% endfor %}
+      {% endfor %}
+    </table>
+
+{% if wrd['ex'] %}
     <p><strong class="h6"> Examples </strong></p>
-    {% for rus_wrd in wrd['ex'] %}
-    {% for pos, ex in rus_wrd.items() %}
-    <p></p>
-    <p><em class="text-muted">{{ pos }}: </em>
-    {% for wrd in ex %}
-    <br>{{ wrd }};
-    {% endfor %}
-    {% endfor %}
-    {% endfor %}
 
+    <dl class="row">
+
+
+      {% for rus_wrd in wrd['ex'] %}
+      {% for pos, ex in rus_wrd.items() %}
+
+      <dt class="col-4">
+        <p><em class="text-muted">{{ pos }}: </em>
+          {% for wrd in ex %}
+          <br> {{ wrd }};
+          {% endfor %}
+      </dt>
+
+
+
+      {% endfor %}
+      {% endfor %}
+      {% endif %}
+    </dl>
   </div>
 </div>
 
