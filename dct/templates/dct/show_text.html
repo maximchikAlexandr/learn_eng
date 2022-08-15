@@ -39,18 +39,16 @@
     {% endif %}
 
 
-{% if wrd['ex'] %}
+    {% if wrd['ex'] %}
     <p><strong class="h6"> Examples </strong></p>
     <table class="table table-hover">
 
       {% for rus_wrd in wrd['ex'] %}
       {% for pos, ex in rus_wrd.items() %}
+      <tr><td><em class="text-muted">{{ pos }} </em> </td> </tr>
       {% for wrd in ex %}
 
-      <tr>
-        <td><em class="text-muted">{{ pos }} </em> </td>
-        <td>{{ wrd }};</td>
-      </tr>
+      <tr><td>{{ wrd }}</td></tr>
 
       {% endfor %}
       {% endfor %}
