@@ -20,7 +20,10 @@ class Text(db.Model):
     time = db.Column(db.Integer(), nullable=False)
     id_user = db.Column(db.Integer(), nullable=False)
 
-    words = db.relationship('EngWord', secondary=texts_eng_words, backref=db.backref('texts', lazy='dynamic'))
+    words = db.relationship('EngWord',
+                            secondary=texts_eng_words,
+                            backref=db.backref('texts', lazy='dynamic'),
+                            lazy='dynamic') # for pagination of words
 
     def __repr__(self):
         return f'<id {self.id}, text: {self.text} >'
