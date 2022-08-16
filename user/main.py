@@ -1,9 +1,7 @@
-"""
-Create Blueprint 'user'. This BP solves the following tasks:
+'''Create Blueprint 'user'. This BP solves the following tasks:
 - new user registration
 - autorization
-- saving user data in \data\users.db
-"""
+- saving user data in db'''
 
 from flask import render_template, Blueprint, request, flash, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user
