@@ -1,3 +1,5 @@
+"""Create application"""
+
 from flask import Flask, redirect, url_for, render_template
 
 from config import ConfigurationTest
@@ -19,5 +21,4 @@ def index():
 
 @app.errorhandler(404)
 def page_not_found(error) -> str:
-    msg = 'Page is not found'
     return render_template('user/page404.html', title='Page is not found')

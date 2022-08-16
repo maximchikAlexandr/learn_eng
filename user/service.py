@@ -1,5 +1,5 @@
 def _searching_error(username: str, email: str, psw: str, psw2: str) -> dict:
-
+    '''This function search a error in user data'''
     # calculating the length
     min_len_name_error = len(username) < 4
     max_len_name_error = len(username) > 20
@@ -27,6 +27,11 @@ def _searching_error(username: str, email: str, psw: str, psw2: str) -> dict:
     }
 
 def check_data_user(request)  -> dict:
+    '''
+    Return dict with items:
+     'valid_data' - bool, results of checking user data
+     'flashed_messages' - list of flashed messages if user data is not valod
+    '''
 
     check_dct = _searching_error(request.form['name'],
                                 request.form['email'],

@@ -1,3 +1,5 @@
+"""Realization of repository pattern"""
+
 import math
 import time
 

@@ -1,3 +1,12 @@
+"""
+Create Blueprint 'dct'. This BP solves the following tasks:
+- add new text from user form
+- find all unique words in a new text
+- get translate to russian from english
+- saving all data in \data\dct_eng.db
+"""
+
+
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
