@@ -142,8 +142,8 @@ class DictDB:
         self.__db.session.add_all(rus_words_lst)
         self.__db.session.commit()
 
-    def get_dct_words(self, id_text):
-        words = self.get_text(id_text=id_text).words
+    def get_dct_words(self, pagination):
+        words = pagination.items
         res = [
             { 'id' : wrd.id,
              'text' : wrd.eng_word,
