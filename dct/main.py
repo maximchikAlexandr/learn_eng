@@ -6,7 +6,7 @@ from dct.service import sec_to_datetime
 
 dct_bp = Blueprint('dct', __name__, template_folder='templates', static_folder='static')
 PER_PAGE_TEXTS = 6
-PER_PAGE_WORDS = 10
+PER_PAGE_WORDS = 15
 
 @dct_bp.route('/', methods=['GET', 'POST'])
 @login_required
@@ -48,8 +48,15 @@ def remove_text(id_text):
 @dct_bp.route('/show_text-<int:id_text>', methods=['GET', 'POST'])
 @login_required
 def show_text(id_text):
-    words = dictDB.get_dct_words(id_text=id_text)
-    title = dictDB.get_text(id_text=id_text).title
+    page = request.args.get('page')
+    page = int(page) if page and page.isdigit() else 1
+    pages = dictDB.get_word_paginate(id_text=id_text,
+                                page=page,
+                                per_page=PER_PAGE_WORDS)
+
+    words = dictDB.get_dct_words(pagination=pages)
+    current_text = dictDB.get_text(id_text=id_text)
     return render_template('dct/show_text.html',
                            words=words,
-                           title=title)
+                           text=current_text,
+                           pages=pages)

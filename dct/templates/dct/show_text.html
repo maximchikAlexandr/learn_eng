@@ -3,7 +3,9 @@
 {% block content %}
 {{ super() }}
 
-<h5> {{ title }} </h5>
+
+
+<h5 class="pb-2 pt-2"> {{ text.title }} </h5>
 {% for wrd in words %}
 
 <div class="row mb-2 pt-2 border-top">
@@ -65,6 +67,47 @@
 
 
 {% endfor %}
+
+<!-- Paginate -->
+<div class="pt-4">
+
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center text-secondary">
+
+    <li {% if pages.has_prev %} class="page-item" {% else %} class="page-item disabled" {% endif %}>
+      <a class="page-link text-secondary" href="./show_text-{{ text.id }}?page={{ pages.prev_num }}"
+        aria-label="Previous">
+        <span aria-hidden="false">&laquo;</span>
+      </a>
+    </li>
+
+    {% for page in pages.iter_pages() %}
+
+        {% if page == pages.page %}
+        <li class="page-item active" aria-current="page"> <span class="page-link"> {{page}} </span> </li>
+        {% else %}
+            {% if page %}
+            <li class="page-item"><a class="page-link text-secondary" href="./show_text-{{ text.id }}?page={{ page }}"> {{page}}
+              </a></li>
+            {% else %}
+            <li class="page-item disabled" aria-current="page"> <span class="page-link"> ... </span> </li>
+            {% endif %}
+        {% endif %}
+
+    {% endfor %}
+
+    <li {% if pages.has_next %} class="page-item" {% else %} class="page-item disabled" {% endif %}>
+      <a class="page-link text-secondary" href="./show_text-{{ text.id }}?page={{ pages.next_num }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+
+  </ul>
+</nav>
+
+</div>
+
 
 
 {% endblock %}
