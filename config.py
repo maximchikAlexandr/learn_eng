@@ -6,7 +6,8 @@ load_dotenv()
 
 yandexDictonaryKey  = os.getenv('yandexDictonaryKey')
 
-class ConfigurationBase(object):
+
+class ConfigurationBase:
     SECRET_KEY = os.getenv('SECRET_KEY')
     SQLALCHEMY_DATABASE_URI = 'sqlite:///dct/data/dct_eng.db'
     SQLALCHEMY_BINDS = {'user_bp' : 'sqlite:///user/data/users.db'}
