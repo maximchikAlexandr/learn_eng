@@ -12,6 +12,7 @@ eng_rus_words = db.Table('eng_rus_words',
                          db.Column('id_eng_word', db.Integer(), db.ForeignKey('eng_words.id'))
                          )
 
+
 class Text(db.Model):
     __tablename__ = 'texts'
     id = db.Column(db.Integer(), primary_key=True)
@@ -29,7 +30,6 @@ class Text(db.Model):
         return f'<id {self.id}, text: {self.text} >'
 
 
-
 class EngWord(db.Model):
     __tablename__ = 'eng_words'
     id = db.Column(db.Integer(), primary_key=True)
@@ -42,6 +42,7 @@ class EngWord(db.Model):
     def __repr__(self):
         return f'<id {self.id}, word: {self.eng_word}, [{self.ts}] >'
 
+
 class Example(db.Model):
     __tablename__ = 'examples'
     id = db.Column(db.Integer(), primary_key=True)
@@ -52,6 +53,7 @@ class Example(db.Model):
     def __repr__(self):
         return f'<id {self.id}, ex: {self.example} >'
 
+
 class TrRusWord(db.Model):
     __tablename__ = 'tr_rus_word'
     id = db.Column(db.Integer(), primary_key=True)
@@ -60,6 +62,7 @@ class TrRusWord(db.Model):
 
     def __repr__(self):
         return f'<id {self.id}, rus word: {self.rus_word} >'
+
 
 class PartOfSpeech(db.Model):
     __tablename__ = 'parts_of_speech'
