@@ -41,10 +41,20 @@ class UserDB:
 
     @_wapper_error('Error of DB: user is not exist')
     def get_user_by_mail(self, email):
+        '''
+        Func return a object of class 'User'
+        :param email: email of user in DB
+        :return: object of class 'User'
+        '''
         return User.query.filter_by(email=email).first()
 
     @_wapper_error('Error of DB: user is not exist')
     def get_user_by_id(self, user_id):
+        '''
+        Func return a object of class 'User'
+        :param user_id: id of user in DB
+        :return: object of class 'User'
+        '''
         return User.query.get(user_id)
 
 userDB = UserDB(db)
