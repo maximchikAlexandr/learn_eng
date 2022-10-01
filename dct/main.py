@@ -68,4 +68,5 @@ def show_text(id_text):
     return render_template('dct/show_text.html',
                            words=words,
                            text=current_text,
-                           pages=pages)
+                           pages=pages,
+                           title='Text')
