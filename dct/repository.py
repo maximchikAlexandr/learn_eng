@@ -76,9 +76,6 @@ class DictDB:
         return Text.query.filter(Text.id_user == id_user).paginate(page=page,
                                                                    per_page=per_page)
 
-    def get_list_of_words(self, id_text):
-        return Text.query.filter(Text.id == id_text).first().words
-
     def add_word(self, eng_word_dct):
         eng_word_model = EngWord(eng_word=eng_word_dct['text'],
                                 ts=eng_word_dct['ts'])
