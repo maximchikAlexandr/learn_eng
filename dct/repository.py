@@ -33,7 +33,6 @@ def _wapper_error(flashed_message):
     return wapper_error
 
 
-
 class WordRepository:
 
     def __init__(self, session_):
@@ -52,14 +51,16 @@ class WordRepository:
 
         return eng_word_model
 
-    @classmethod
-    def is_existing_word(cls, eng_word):
+    @staticmethod
+    def is_existing_word(eng_word):
         return bool(EngWord.query.filter(EngWord.eng_word == eng_word).all())
 
-    def get_word(self, id_word):
+    @staticmethod
+    def get_word(id_word):
         return EngWord.query.filter(EngWord.id == id_word).one()
 
-    def get_word_paginate(self, id_text, page, per_page):
+    @staticmethod
+    def get_word_paginate(id_text, page, per_page):
         return Text.query.filter(Text.id == id_text).one().words.paginate(page=page, per_page=per_page)
 
     def _add_all_pos(self, eng_word_dct):
@@ -136,10 +137,12 @@ class TextRepository:
 
         return False
 
-    def is_existing_text(self, text):
+    @staticmethod
+    def is_existing_text(text):
         return bool(Text.query.filter(Text.text == text).all())
 
-    def get_text(self, id_text):
+    @staticmethod
+    def get_text(id_text):
         return Text.query.filter(Text.id == id_text).one()
 
     def remove_text(self, id_text):
@@ -147,7 +150,8 @@ class TextRepository:
         self.__session.delete(text)
         self.__session.commit()
 
-    def get_text_paginate(self, id_user, page, per_page):
+    @staticmethod
+    def get_text_paginate(id_user, page, per_page):
         return Text.query.filter(Text.id_user == id_user).paginate(page=page,
                                                                    per_page=per_page)
 
