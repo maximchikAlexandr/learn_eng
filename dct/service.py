@@ -55,7 +55,7 @@ def sec_to_datetime(sec: int) -> str:
     return datetime.fromtimestamp(sec).strftime('%Y-%m-%d %H:%M')
 
 
-def get_dct_words(pagination):
+def get_words_from_pagination(pagination):
     words = pagination.items
     res = [
         { 'id' : wrd.id,
