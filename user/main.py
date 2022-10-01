@@ -8,7 +8,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from user.service import check_data_user
-from user.repository import userDB
+from user.repository import repository
 
 
 user_bp = Blueprint('user', __name__, template_folder='templates', static_folder='static')
@@ -20,7 +20,7 @@ login_manager.login_message_category = 'success'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return userDB.get_user_by_id(user_id)
+    return repository.get_user_by_id(user_id)
 
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -29,12 +29,12 @@ def login():
         password = request.form['psw']
 
         if email and password:
-            user = userDB.get_user_by_mail(email=email)
+            user = repository.get_user_by_mail(email=email)
             rm = True if request.form.get('remainme') else False
             if user and check_password_hash(user.hash_psw, password):
                 login_user(user, remember=rm)
                 return redirect(url_for('index'))
-            flash('Password or email are not corect', category='danger')
+            flash('Password or email are not correct', category='danger')
     return render_template('user/login.html', title='Please login')
 
 
@@ -46,9 +46,9 @@ def register():
         # if data in form is correct
         if check_dct['valid_data']:
             hash_psw = generate_password_hash(request.form['psw'])
-            if userDB.add_new_user(username=request.form['name'],
-                         email=request.form['email'],
-                         hashpsw=hash_psw):
+            if repository.add_new_user(username=request.form['name'],
+                                    email=request.form['email'],
+                                    hashpsw=hash_psw):
                 flash(f'User «{request.form["name"]}» is registred in the site',
                       category='success')
                 return render_template('user/login.html', title='Please login')

@@ -22,10 +22,10 @@ def _wapper_error(flashed_message):
     return wapper_error
 
 
-class UserDB:
+class Repository:
 
-    def __init__(self, db):
-        self.__db = db
+    def __init__(self, session_):
+        self.__session = session_
 
     @_wapper_error('Error of DB: username or email are not unique')
     def add_new_user(self, username, email, hashpsw):
@@ -35,8 +35,8 @@ class UserDB:
                     hash_psw=hashpsw,
                     time=tm)
 
-        self.__db.session.add(user)
-        self.__db.session.commit()
+        self.__session.add(user)
+        self.__session.commit()
         return True
 
     @_wapper_error('Error of DB: user is not exist')
@@ -57,4 +57,4 @@ class UserDB:
         '''
         return User.query.get(user_id)
 
-userDB = UserDB(db)
+repository = Repository(db.session)
