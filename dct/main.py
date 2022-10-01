@@ -18,16 +18,17 @@ dct_bp = Blueprint('dct', __name__, template_folder='templates', static_folder='
 PER_PAGE_TEXTS = 6
 PER_PAGE_WORDS = 15
 
+
 @dct_bp.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
     page = request.args.get('page')
     page = int(page) if page and page.isdigit() else 1
     pages = Pagination.pagination_for_texts(id_user=current_user.get_id(),
-                                page=page,
-                                per_page=PER_PAGE_TEXTS)
+                                            page=page,
+                                            per_page=PER_PAGE_TEXTS)
 
-    dates = {txt.id : sec_to_datetime(txt.time) for txt in pages.items}
+    dates = {txt.id: sec_to_datetime(txt.time) for txt in pages.items}
     
     return render_template('dct/index.html',
                            title='Texts',
@@ -57,14 +58,15 @@ def remove_text(id_text):
     TextRepository.remove_text(db.session, id_text=id_text)
     return redirect(url_for('.index'))
 
+
 @dct_bp.route('/show_text-<int:id_text>', methods=['GET', 'POST'])
 @login_required
 def show_text(id_text):
     page = request.args.get('page')
     page = int(page) if page and page.isdigit() else 1
     pages = Pagination.pagination_for_words(id_text=id_text,
-                                page=page,
-                                per_page=PER_PAGE_WORDS)
+                                            page=page,
+                                            per_page=PER_PAGE_WORDS)
 
     words = Pagination.get_words_from_pagination(pagination=pages)
     current_text = TextRepository.get_text(id_text=id_text)

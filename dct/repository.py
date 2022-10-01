@@ -8,7 +8,7 @@ from flask import flash
 from flask_login import current_user
 
 
-from dct.service import getEngTranslate, get_unic_words
+from dct.service import Traslation, get_unic_words
 from dct.models import (
     Text,
     Example,
@@ -118,7 +118,7 @@ class TextRepository:
                 if WordRepository.is_existing_word(word):
                     eng_word_model = EngWord.query.filter(EngWord.eng_word == word).first()
                 else:
-                    eng_word_dct = getEngTranslate(word)
+                    eng_word_dct = Traslation(word).parsing_response()
                     if eng_word_dct['tr']:
                         word = WordRepository(self.__session, eng_word_dct)
                         word.save()

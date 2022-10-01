@@ -57,4 +57,5 @@ class Repository:
         '''
         return User.query.get(user_id)
 
+
 repository = Repository(db.session)
