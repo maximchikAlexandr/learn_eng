@@ -12,7 +12,7 @@ from flask_login import login_required, current_user
 
 from dct import db
 from dct.repository import TextRepository, Pagination
-from dct.service import sec_to_datetime, get_words_from_pagination
+from dct.service import sec_to_datetime
 
 dct_bp = Blueprint('dct', __name__, template_folder='templates', static_folder='static')
 PER_PAGE_TEXTS = 6
@@ -66,7 +66,7 @@ def show_text(id_text):
                                 page=page,
                                 per_page=PER_PAGE_WORDS)
 
-    words = get_words_from_pagination(pagination=pages)
+    words = Pagination.get_words_from_pagination(pagination=pages)
     current_text = TextRepository.get_text(id_text=id_text)
     return render_template('dct/show_text.html',
                            words=words,

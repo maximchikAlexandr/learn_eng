@@ -160,3 +160,17 @@ class Pagination:
     def pagination_for_words(id_text, page, per_page):
         print('word', Text.query.filter(Text.id == id_text).one().words.paginate(page=page, per_page=per_page))
         return Text.query.filter(Text.id == id_text).one().words.paginate(page=page, per_page=per_page)
+
+    @staticmethod
+    def get_words_from_pagination(pagination):
+        words = pagination.items
+        res = [
+            {'id': wrd.id,
+             'text': wrd.eng_word,
+             'ts': wrd.ts,
+             'tr': [{pos.pos: [tr.rus_word for tr in wrd.translated_words if pos == tr.pos]} for pos in
+                    set(tr.pos for tr in wrd.translated_words)],
+             'ex': [{pos.pos: [ex.example for ex in wrd.examples if pos == ex.pos]} for pos in
+                    set(ex.pos for ex in wrd.examples)]}
+            for wrd in words]
+        return res
