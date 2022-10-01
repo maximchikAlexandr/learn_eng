@@ -7,7 +7,7 @@ from collections import ChainMap
 from flask import flash
 from flask_login import current_user
 
-from dct import db
+
 from dct.service import getEngTranslate, get_unic_words
 from dct.models import (
     Text,
@@ -98,25 +98,22 @@ class WordRepository:
     def is_existing_word(eng_word):
         return bool(EngWord.query.filter(EngWord.eng_word == eng_word).all())
 
-    @staticmethod
-    def get_word_paginate(id_text, page, per_page):
-        return Text.query.filter(Text.id == id_text).one().words.paginate(page=page, per_page=per_page)
-
 
 class TextRepository:
 
-    def __init__(self, session_):
+    def __init__(self, session_, text, title):
         self.__session = session_
-
-    def add_text(self, text, title):
-        tm = math.floor(time.time())  # Save time
-        text_model = Text(text=text,
+        self.__text = text
+        self.__title = title
+        self.__text_model = Text(text=text,
                           title=title,
-                          time=tm,
+                          time=math.floor(time.time()),
                           id_user=current_user.get_id())
 
-        if not self.is_existing_text(text):
-            for word in get_unic_words(text):
+    def save(self):
+
+        if not self._is_existing_text():
+            for word in get_unic_words(self.__text):
 
                 if WordRepository.is_existing_word(word):
                     eng_word_model = EngWord.query.filter(EngWord.eng_word == word).first()
@@ -128,31 +125,38 @@ class TextRepository:
                         eng_word_model = word.get_model()
                     else:
                         continue
-                text_model.words.append(eng_word_model)
+                self.__text_model.words.append(eng_word_model)
 
-            self.__session.add(text_model)
+            self.__session.add(self.__text_model)
             self.__session.commit()
             return True
 
         return False
 
-    @staticmethod
-    def is_existing_text(text):
-        return bool(Text.query.filter(Text.text == text).all())
+    def _is_existing_text(self):
+        return bool(Text.query.filter(Text.text == self.__text).all())
+
+    @classmethod
+    def remove_text(cls, session, id_text):
+        text = cls.get_text(id_text)
+        session.delete(text)
+        session.commit()
 
     @staticmethod
     def get_text(id_text):
         return Text.query.filter(Text.id == id_text).one()
 
-    def remove_text(self, id_text):
-        text = self.get_text(id_text)
-        self.__session.delete(text)
-        self.__session.commit()
+
+class Pagination:
 
     @staticmethod
-    def get_text_paginate(id_user, page, per_page):
+    def pagination_for_texts(id_user, page, per_page):
+        print('text', Text.query.filter(Text.id_user == id_user).paginate(page=page,
+                                                                   per_page=per_page))
         return Text.query.filter(Text.id_user == id_user).paginate(page=page,
                                                                    per_page=per_page)
 
-
-textRepository = TextRepository(db.session)
+    @staticmethod
+    def pagination_for_words(id_text, page, per_page):
+        print('word', Text.query.filter(Text.id == id_text).one().words.paginate(page=page, per_page=per_page))
+        return Text.query.filter(Text.id == id_text).one().words.paginate(page=page, per_page=per_page)
