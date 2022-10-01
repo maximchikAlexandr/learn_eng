@@ -53,3 +53,15 @@ def getEngTranslate(findWord) -> dict:
 
 def sec_to_datetime(sec: int) -> str:
     return datetime.fromtimestamp(sec).strftime('%Y-%m-%d %H:%M')
+
+
+def get_dct_words(pagination):
+    words = pagination.items
+    res = [
+        { 'id' : wrd.id,
+            'text' : wrd.eng_word,
+            'ts' : wrd.ts,
+            'tr' : [{pos.pos : [tr.rus_word for tr in wrd.translated_words if pos == tr.pos]} for pos in set(tr.pos for tr in wrd.translated_words)],
+            'ex' : [{pos.pos : [ex.example for ex in wrd.examples if pos == ex.pos] } for pos in set(ex.pos for ex in wrd.examples)]}
+        for wrd in words]
+    return res
