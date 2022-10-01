@@ -10,7 +10,7 @@ Create Blueprint 'dct'. This BP solves the following tasks:
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
-from dct.repository import textRepository, wordRepository
+from dct.repository import textRepository, WordRepository
 from dct.service import sec_to_datetime, get_words_from_pagination
 
 dct_bp = Blueprint('dct', __name__, template_folder='templates', static_folder='static')
@@ -59,7 +59,7 @@ def remove_text(id_text):
 def show_text(id_text):
     page = request.args.get('page')
     page = int(page) if page and page.isdigit() else 1
-    pages = wordRepository.get_word_paginate(id_text=id_text,
+    pages = WordRepository.get_word_paginate(id_text=id_text,
                                 page=page,
                                 per_page=PER_PAGE_WORDS)
 

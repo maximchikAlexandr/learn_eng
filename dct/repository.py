@@ -35,37 +35,26 @@ def _wapper_error(flashed_message):
 
 class WordRepository:
 
-    def __init__(self, session_):
+    def __init__(self, session_, eng_word_dct):
         self.__session = session_
-
-    def add_word(self, eng_word_dct):
-        eng_word_model = EngWord(eng_word=eng_word_dct['text'],
+        self.__eng_word_dct = eng_word_dct
+        self.__eng_word_model = EngWord(eng_word=eng_word_dct['text'],
                                  ts=eng_word_dct['ts'])
 
-        self._add_all_pos(eng_word_dct)
-        self._add_all_rus_words(eng_word_dct, eng_word_model)
-        self._add_all_examples(eng_word_dct, eng_word_model)
+    def get_model(self):
+        return self.__eng_word_model
 
-        self.__session.add(eng_word_model)
+    def save(self):
+        self._save_all_pos()
+        self._save_all_rus_words()
+        self._save_all_examples()
+
+        self.__session.add(self.__eng_word_model)
         self.__session.commit()
 
-        return eng_word_model
-
-    @staticmethod
-    def is_existing_word(eng_word):
-        return bool(EngWord.query.filter(EngWord.eng_word == eng_word).all())
-
-    @staticmethod
-    def get_word(id_word):
-        return EngWord.query.filter(EngWord.id == id_word).one()
-
-    @staticmethod
-    def get_word_paginate(id_text, page, per_page):
-        return Text.query.filter(Text.id == id_text).one().words.paginate(page=page, per_page=per_page)
-
-    def _add_all_pos(self, eng_word_dct):
+    def _save_all_pos(self):
         pos_lst = []
-        for pos in ChainMap(eng_word_dct['tr'], eng_word_dct['ex']):
+        for pos in ChainMap(self.__eng_word_dct['tr'], self.__eng_word_dct['ex']):
             if not PartOfSpeech.query.filter(PartOfSpeech.pos == pos).all():
                 pos_model = PartOfSpeech(pos=pos)
                 pos_lst.append(pos_model)
@@ -73,23 +62,23 @@ class WordRepository:
         self.__session.add_all(pos_lst)
         self.__session.commit()
 
-    def _add_all_examples(self, eng_word_dct, eng_word_model):
+    def _save_all_examples(self):
         examples_lst = []
-        for pos, examples in eng_word_dct['ex'].items():
+        for pos, examples in self.__eng_word_dct['ex'].items():
             for ex in examples:
                 example_model = Example(
                     example=ex,
                     id_pos=PartOfSpeech.query.filter(PartOfSpeech.pos == pos).first().id,
-                    id_eng_word=eng_word_model.id
+                    id_eng_word=self.__eng_word_model.id
                 )
                 examples_lst.append(example_model)
 
         self.__session.add_all(examples_lst)
         self.__session.commit()
 
-    def _add_all_rus_words(self, eng_word_dct, eng_word_model):
+    def _save_all_rus_words(self):
         rus_words_lst = []
-        for pos, tr_lst in eng_word_dct['tr'].items():
+        for pos, tr_lst in self.__eng_word_dct['tr'].items():
             for tr in tr_lst:
                 if not TrRusWord.query.filter(TrRusWord.rus_word == tr).all():
                     tr_rus_word = TrRusWord(
@@ -100,10 +89,18 @@ class WordRepository:
                 else:
                     tr_rus_word = TrRusWord.query.filter(TrRusWord.rus_word == tr).first()
 
-                eng_word_model.translated_words.append(tr_rus_word)
+                self.__eng_word_model.translated_words.append(tr_rus_word)
 
         self.__session.add_all(rus_words_lst)
         self.__session.commit()
+
+    @staticmethod
+    def is_existing_word(eng_word):
+        return bool(EngWord.query.filter(EngWord.eng_word == eng_word).all())
+
+    @staticmethod
+    def get_word_paginate(id_text, page, per_page):
+        return Text.query.filter(Text.id == id_text).one().words.paginate(page=page, per_page=per_page)
 
 
 class TextRepository:
@@ -126,7 +123,9 @@ class TextRepository:
                 else:
                     eng_word_dct = getEngTranslate(word)
                     if eng_word_dct['tr']:
-                        eng_word_model = WordRepository(self.__session).add_word(eng_word_dct)
+                        word = WordRepository(self.__session, eng_word_dct)
+                        word.save()
+                        eng_word_model = word.get_model()
                     else:
                         continue
                 text_model.words.append(eng_word_model)
@@ -157,4 +156,3 @@ class TextRepository:
 
 
 textRepository = TextRepository(db.session)
-wordRepository = WordRepository(db.session)
