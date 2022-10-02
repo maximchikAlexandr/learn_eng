@@ -120,9 +120,9 @@ class TextRepository:
                 else:
                     eng_word_dct = Traslation(word).parsing_response()
                     if eng_word_dct['tr']:
-                        word = WordRepository(self.__session, eng_word_dct)
-                        word.save()
-                        eng_word_model = word.get_model()
+                        word_rep = WordRepository(self.__session, eng_word_dct)
+                        word_rep.save()
+                        eng_word_model = word_rep.get_model()
                     else:
                         continue
                 self.__text_model.words.append(eng_word_model)
