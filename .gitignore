@@ -10,3 +10,4 @@ test_login.txt
 \dct\data\dct_eng.db
 \user\data\users.db
 .env
+env.py
