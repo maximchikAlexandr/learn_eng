@@ -10,9 +10,9 @@ yandex_dictionary_key = os.getenv("YANDEX_DICTIONARY_KEY")
 class ConfigurationBase:
     SECRET_KEY = os.getenv("SECRET_KEY")
     SQLALCHEMY_DATABASE_URI = (
-        f"postgresql+psycopg2://{os.getenv('DB_USER')}:"
-        f"{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:"
-        f"{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+        f"postgresql+psycopg2://{os.getenv('POSTGRES_USER')}:"
+        f"{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('DB_HOST')}:"
+        f"{os.getenv('DB_PORT')}/{os.getenv('POSTGRES_DB')}"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
