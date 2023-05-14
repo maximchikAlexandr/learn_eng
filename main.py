@@ -23,5 +23,5 @@ def index():
 
 
 @app.errorhandler(404)
-def page_not_found(error) -> str:
+def page_not_found(_) -> str:
     return render_template("user/page404.html", title="Page is not found")

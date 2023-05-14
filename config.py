@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-yandexDictonaryKey = os.getenv("yandexDictonaryKey")
+yandex_dictionary_key = os.getenv("YANDEX_DICTIONARY_KEY")
 
 
 class ConfigurationBase:
