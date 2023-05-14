@@ -33,7 +33,7 @@ def login():
 
         if email and password:
             user = repository.get_user_by_mail(email=email)
-            rm = True if request.form.get("remember-me") else False
+            rm = bool(request.form.get("remember-me"))
             if user and check_password_hash(user.hash_psw, password):
                 login_user(user, remember=rm)
                 return redirect(url_for("index"))

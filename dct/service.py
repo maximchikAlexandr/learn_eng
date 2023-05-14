@@ -3,7 +3,7 @@ from datetime import datetime
 
 import requests
 
-from config import yandexDictonaryKey
+from config import yandex_dictionary_key
 
 
 def get_unic_words(text: str) -> list:
@@ -16,12 +16,12 @@ def sec_to_datetime(sec: int) -> str:
 
 
 def _get_response(findWord):
-    URL = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=" + yandexDictonaryKey + \
-          "&lang=en-ru&text=" + findWord + "&ui=ru"
-    return requests.get(URL).json()
+    url = f"https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key={yandex_dictionary_key}" \
+          f"&lang=en-ru&text={findWord}&ui=ru"
+    return requests.get(url, timeout=120).json()
 
 
-class Traslation:
+class Translation:
 
     def __init__(self, word):
         self.__word = word

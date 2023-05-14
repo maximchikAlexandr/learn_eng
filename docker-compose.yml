@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  postgres_db:
+    image: postgres:15
+    container_name: learn_eng_db
+    volumes:
+      - ../learn_eng_db:/var/lib/postgresql/data
+    env_file:
+      - .env
+    ports:
+      - "${DB_OUT_PORT}:${DB_PORT}"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 256M
+        reservations:
+          cpus: '0.01'
+          memory: 128M
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "${POSTGRES_USER}" ]
+      interval: 10s
+      retries: 5
+
+  web:
+    build: .
+    container_name: learn_eng_app
+    command: >
+      bash -c "flask db upgrade && FLASK_APP=/app/app.py && flask run --host=0.0.0.0"
+    volumes:
+      - .:/app
+    ports:
+      - '5001:5000'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 256M
+        reservations:
+          cpus: '0.01'
+          memory: 128M
+    depends_on:
+      postgres_db:
+        condition: service_healthy

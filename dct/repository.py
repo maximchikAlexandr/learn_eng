@@ -4,26 +4,10 @@ import math
 import time
 from collections import ChainMap
 
-from flask import flash
 from flask_login import current_user
 
 from dct.models import EngWord, Example, PartOfSpeech, Text, TrRusWord
-from dct.service import Traslation, get_unic_words
-
-
-def _wapper_error(flashed_message):
-    def wapper_error(func):
-        def wapper(*args, **kwargs):
-            try:
-                res = func(*args, **kwargs)
-                return res
-            except:
-                flash(flashed_message, category="danger")
-            return False
-
-        return wapper
-
-    return wapper_error
+from dct.service import Translation, get_unic_words
 
 
 class WordRepository:
@@ -118,7 +102,7 @@ class TextRepository:
                         EngWord.eng_word == word
                     ).first()
                 else:
-                    eng_word_dct = Traslation(word).parsing_response()
+                    eng_word_dct = Translation(word).parsing_response()
                     if eng_word_dct["tr"]:
                         word_rep = WordRepository(self.__session, eng_word_dct)
                         word_rep.save()
