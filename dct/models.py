@@ -33,8 +33,8 @@ class Text(db.Model):
 class EngWord(db.Model):
     __tablename__ = 'eng_words'
     id = db.Column(db.Integer(), primary_key=True)
-    eng_word = db.Column(db.String(40), nullable=False, unique=True)
-    ts = db.Column(db.String(40))
+    eng_word = db.Column(db.String(120), nullable=False, unique=True)
+    ts = db.Column(db.String(120))
     examples = db.relationship('Example', backref='eng_word', lazy=True)
 
     translated_words = db.relationship('TrRusWord', secondary=eng_rus_words, backref=db.backref('eng_words', lazy='dynamic'))
@@ -46,7 +46,7 @@ class EngWord(db.Model):
 class Example(db.Model):
     __tablename__ = 'examples'
     id = db.Column(db.Integer(), primary_key=True)
-    example = db.Column(db.String(40), nullable=False)
+    example = db.Column(db.String(120), nullable=False)
     id_pos = db.Column(db.Integer, db.ForeignKey('parts_of_speech.id'), nullable=False)
     id_eng_word = db.Column(db.Integer, db.ForeignKey('eng_words.id'),nullable=False)
 
@@ -57,7 +57,7 @@ class Example(db.Model):
 class TrRusWord(db.Model):
     __tablename__ = 'tr_rus_word'
     id = db.Column(db.Integer(), primary_key=True)
-    rus_word = db.Column(db.String(40), nullable=False, unique=True)
+    rus_word = db.Column(db.String(120), nullable=False, unique=True)
     id_pos = db.Column(db.Integer, db.ForeignKey('parts_of_speech.id'), nullable=False)
 
     def __repr__(self):
@@ -67,7 +67,7 @@ class TrRusWord(db.Model):
 class PartOfSpeech(db.Model):
     __tablename__ = 'parts_of_speech'
     id = db.Column(db.Integer(), primary_key=True)
-    pos = db.Column(db.String(20), nullable=False, unique=True)
+    pos = db.Column(db.String(40), nullable=False, unique=True)
     ex = db.relationship('Example', backref='pos', lazy=True)
     tr_rus_words = db.relationship('TrRusWord', backref='pos', lazy=True)
 
