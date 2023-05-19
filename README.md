@@ -27,14 +27,17 @@ nano .env
 and fill it with the following environment variables:
 
 ```sh
-SECRET_KEY=some_key
-YANDEX_DICTIONARY_KEY=our_Yandex_Dictionary_API_key
-POSTGRES_DB=some_db
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=some_password
-DB_HOST=postgres_db
-DB_PORT=some_port1
-DB_OUT_PORT=some_port2
+# App parameters
+SECRET_KEY="the_key_used_for_encryption"
+YANDEX_DICTIONARY_KEY="your_Yandex_Dictionary_API_key"
+
+# database parameter
+POSTGRES_DB="database_name"
+POSTGRES_USER="your_database_username"
+POSTGRES_PASSWORD="your_database_password"
+DB_HOST="your_database_host"
+DB_PORT="port_of_your_database_in_container"
+DB_OUT_PORT="outer_port_of_your_database"
 ```
 
 Create and start the docker containers:
@@ -43,11 +46,14 @@ Create and start the docker containers:
 docker compose up -d
 ```
 
-Open up the browser and navigate to the main page of the project at http://localhost:5001/.
-
+Open up the browser and navigate to the main page of the project at 
+```sh
+http://localhost:5001/
+```
 
 ## Yandex Dictionary API key
 
 To get the Yandex Dictionary API key, follow the official documentation:
-
+```sh
 https://yandex.com/dev/dictionary/keys/get/?service=dict
+```
